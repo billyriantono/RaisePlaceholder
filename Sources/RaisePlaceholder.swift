@@ -63,6 +63,32 @@ public class RaisePlaceholder: UITextField, UITextFieldDelegate {
         
         self.placeholderLabel = label
         
+        if let filledText = self.text {
+            if filledText.characters.count > 0 , let placeholderLabel = self.placeholderLabel {
+                if placeholderLabel.alpha == 0 {
+                    placeholderLabel.alpha = 1
+                }
+                
+                if self.placeholder == "" {
+                    self.titlePlaceholder = placeholderLabel.text
+                } else {
+                    self.titlePlaceholder = self.placeholder
+                }
+                
+                self.placeholder = ""
+                
+                let frame = placeholderLabel.frame
+                UIView.animate(withDuration: animationDuration, animations: {
+                    placeholderLabel.text = self.titlePlaceholder
+                    placeholderLabel.font = UIFont.systemFont(ofSize: self.placeholderLabelFontSize)
+                    placeholderLabel.textColor = self.subjectColor
+                    placeholderLabel.frame.origin.y = frame.origin.y - placeholderLabel.frame.size.height - (self.frame.size.height / 2 - frame.size.height / 2)
+                }, completion: { (isComplete) in
+                    
+                })
+            }
+        }
+        
     }
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
