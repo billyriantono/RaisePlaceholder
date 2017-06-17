@@ -18,6 +18,10 @@ public class RaisePlaceholder: UITextField, UITextFieldDelegate {
     fileprivate var placeholderLabel: UILabel?
     fileprivate var titlePlaceholder: String?
     
+    public var raisePlaceholderDelegate : RaisePlaceholderDelegate?
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         delegate = self
@@ -87,6 +91,10 @@ public class RaisePlaceholder: UITextField, UITextFieldDelegate {
                 
             })
         }
+        
+        if let placeHolderDelegate = self.raisePlaceholderDelegate {
+            placeHolderDelegate.raisePlaceholderDidBeginEditing(textField)
+        }
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
@@ -108,5 +116,17 @@ public class RaisePlaceholder: UITextField, UITextFieldDelegate {
                 placeholderLabel.alpha = 0
             })
         }
+        
+        if let placeHolderDelegate = self.raisePlaceholderDelegate {
+            placeHolderDelegate.raisePlaceholderDidEndEditing(textField)
+        }
+    }
+    
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let placeHolderDelegate = self.raisePlaceholderDelegate {
+            return placeHolderDelegate.raisePlaceholderShouldReturn(textField)
+        }
+        return true
     }
 }
